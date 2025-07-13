@@ -139,6 +139,17 @@
 </head>
 <body>
   <header>
+
+<button id="darkModeToggle" style="margin-left: 10px;">🌙 Dark Mode</button>
+    <script>
+    const toggle = document.getElementById('darkModeToggle');
+    toggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        toggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+    });
+    </script>
+
+
     <h2>📚 My Blog</h2>
     <a href="post.html" class="create-post-btn">+ Create New Post</a>
   </header>
