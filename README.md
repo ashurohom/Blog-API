@@ -70,6 +70,15 @@ I was the **sole developer** on this project. I handled:
 
 ---
 
+
+## 📸 Preview
+
+![Blog Homepage](assets/blog_home.png)
+
+![Create Post](assets/create_post.png)
+
+---
+
 ## 📚 What I Learned
 
 - Designed and built a **RESTful backend** with DRF  
