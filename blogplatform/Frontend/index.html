@@ -13,6 +13,12 @@
 
   <h2>📚 Blog Posts</h2>
   <div id="postsContainer"></div>
+
+  <div id="pagination">
+    <button onclick="loadPosts(prevPageUrl)" id="prevBtn">⬅️ Previous</button>
+    <button onclick="loadPosts(nextPageUrl)" id="nextBtn">Next ➡️</button>
+  </div>
+
   
 
   <script>
@@ -48,6 +54,28 @@
     }
 
     loadPosts();
+
+    
+function deletePost(id) {
+    if (!confirm("Are you sure you want to delete this post?")) return;
+
+    fetch(`${API_BASE}/api/posts/${id}/`, {
+        method: "DELETE",
+        headers: {
+        "Authorization": `Token ${token}`
+        }
+    })
+    .then(res => {
+        if (res.status === 204) {
+        alert("Deleted successfully ✅");
+        loadPosts(); // reload posts after deletion
+        } else {
+        alert("Failed to delete ❌");
+        }
+    })
+    .catch(err => console.error("Delete error:", err));
+    }
+
 
   </script>
 
