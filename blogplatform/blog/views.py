@@ -6,7 +6,7 @@ from rest_framework import filters
 # Create your views here.
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset=Post.objects.all().order_by('-created_at')
+    queryset=Post.objects.all().order_by('-id')
     serializer_class=PostSerializers
     permission_classes=[permissions.IsAuthenticated]
     filter_backends = [filters.SearchFilter]

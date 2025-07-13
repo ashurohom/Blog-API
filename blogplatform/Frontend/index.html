@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Blog</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .post { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+    .title { font-size: 20px; font-weight: bold; }
+    .content { margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <h2>📚 Blog Posts</h2>
+  <div id="postsContainer"></div>
+  
+
+  <script>
+    localStorage.setItem("token", "5edfa8ac4b800abf327edec5abb8e19e03f3c467");
+    const API_BASE = "http://127.0.0.1:8000";
+    const token = localStorage.getItem("token"); // ✅ Must be stored already
+
+    function loadPosts() {
+    fetch(`${API_BASE}/api/posts/`, {
+        method: "GET",
+        headers: {
+        "Authorization": `Token ${token}`
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById("postsContainer");
+        container.innerHTML = "";
+
+        data.results.forEach(post => {  // ✅ Fix here
+        const postDiv = document.createElement("div");
+        postDiv.classList.add("post");
+        postDiv.innerHTML = `
+            <div class="title">${post.title}</div>
+            <div class="content">${post.content}</div>
+            <button onclick="deletePost(${post.id})">🗑️ Delete</button>
+        `;
+
+        container.appendChild(postDiv);
+        });
+    })
+    .catch(err => console.error("Error loading posts:", err));
+    }
+
+    loadPosts();
+
+  </script>
+
+</body>
+</html>
