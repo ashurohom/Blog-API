@@ -65,8 +65,8 @@ I was the **sole developer** on this project. I handled:
 
 ## 📂 GitHub Repository
 
-🔗 [**Click Here to View the Repository**](https://github.com/your-username/blog-app)  
-*(Replace with your actual GitHub repo link)*
+🔗 [**Click Here to View the Repository**](https://github.com/ashurohom/Blog-API)  
+
 
 ---
 
