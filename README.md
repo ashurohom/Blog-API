@@ -73,9 +73,9 @@ I was the **sole developer** on this project. I handled:
 
 ## 📸 Preview
 
-![Homepage](https://drive.google.com/file/d/1xxEZZeW5pGWMVl5jD5p9HXV-E7hAg5OJ/view?usp=sharing)
-
+![Home Page](assets/create_post.png)
 ![Create Post](assets/create_post.png)
+![Blog Post](assets/create_post.png)
 
 ---
 
