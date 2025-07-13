@@ -1,27 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Create Blog Post</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Blog Post ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial; max-width: 600px; margin: 40px auto; }
-    input, textarea { width: 100%; margin: 10px 0; padding: 10px; }
-    button { padding: 10px 20px; }
+    :root {
+      --primary: #4a6fa5;
+      --secondary: #166088;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --success: #28a745;
+      --danger: #dc3545;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                  url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: white;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-view {
+      background: var(--success);
+    }
+
+    .btn-view:hover {
+      background: #218838;
+    }
   </style>
 </head>
 <body>
-
-  <h2>Create Blog Post 📝</h2>
-
-  <input type="text" id="title" placeholder="Title">
-  <textarea id="content" rows="6" placeholder="Write your blog content..."></textarea>
-  <button onclick="submitPost()">Submit</button>
+  <div class="container">
+    <h2>Create Blog Post ✍️</h2>
+    <input type="text" id="title" placeholder="Title">
+    <textarea id="content" rows="6" placeholder="Write your thoughts..."></textarea>
+    
+    <div class="actions">
+      <button onclick="submitPost()">Publish Post</button>
+      <button class="btn-view" onclick="window.location.href='index.html'">View Blog</button>
+    </div>
+  </div>
 
   <script>
     function submitPost() {
       const title = document.getElementById('title').value;
       const content = document.getElementById('content').value;
       localStorage.setItem("token", "5edfa8ac4b800abf327edec5abb8e19e03f3c467");
-      const token = localStorage.getItem("token"); // Assumes you're logged in & token is stored
+      const token = localStorage.getItem("token");
+
+      if (!title || !content) {
+        alert("Title and content are required!");
+        return;
+      }
 
       fetch('http://127.0.0.1:8000/api/posts/', {
         method: 'POST',
@@ -34,14 +142,15 @@
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        alert("Post created successfully ✅");
+        alert("Post published successfully! 🎉");
+        document.getElementById('title').value = '';
+        document.getElementById('content').value = '';
       })
       .catch(err => {
         console.error("Error:", err);
-        alert("Error creating post ❌");
+        alert("Failed to publish post. Please try again.");
       });
     }
   </script>
-
 </body>
 </html>

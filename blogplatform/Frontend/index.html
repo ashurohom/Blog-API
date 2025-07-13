@@ -1,17 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Blog</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Blog 📚</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .post { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
-    .title { font-size: 20px; font-weight: bold; }
-    .content { margin-top: 10px; }
+    :root {
+      --primary: #4a6fa5;
+      --secondary: #166088;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --success: #28a745;
+      --danger: #dc3545;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f7fa;
+      color: var(--dark);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      color: var(--secondary);
+      margin-bottom: 10px;
+    }
+
+    .create-post-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .create-post-btn:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+    }
+
+    .post {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .post:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--secondary);
+      margin-bottom: 10px;
+    }
+
+    .content {
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .delete-btn {
+      background: var(--danger);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .delete-btn:hover {
+      background: #c82333;
+    }
+
+    #pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    #pagination button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    #pagination button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    #pagination button:hover:not(:disabled) {
+      background: var(--secondary);
+    }
   </style>
 </head>
 <body>
+  <header>
+    <h2>📚 My Blog</h2>
+    <a href="post.html" class="create-post-btn">+ Create New Post</a>
+  </header>
 
-  <h2>📚 Blog Posts</h2>
   <div id="postsContainer"></div>
 
   <div id="pagination">
@@ -19,77 +141,69 @@
     <button onclick="loadPosts(nextPageUrl)" id="nextBtn">Next ➡️</button>
   </div>
 
-  
-
   <script>
     localStorage.setItem("token", "5edfa8ac4b800abf327edec5abb8e19e03f3c467");
     const API_BASE = "http://127.0.0.1:8000";
-    const token = localStorage.getItem("token"); // ✅ Must be stored already
+    const token = localStorage.getItem("token");
 
     let nextPageUrl = null;
     let prevPageUrl = null;
 
     function loadPosts(url = `${API_BASE}/api/posts/`) {
-    fetch(url, {
+      fetch(url, {
         method: "GET",
         headers: {
-        "Authorization": `Token ${token}`
+          "Authorization": `Token ${token}`
         }
-    })
-    .then(res => res.json())
-    .then(data => {
+      })
+      .then(res => res.json())
+      .then(data => {
         const container = document.getElementById("postsContainer");
         container.innerHTML = "";
 
-        // Save next/previous page URLs
         nextPageUrl = data.next;
         prevPageUrl = data.previous;
 
-        // Disable/Enable buttons
         document.getElementById("nextBtn").disabled = !nextPageUrl;
         document.getElementById("prevBtn").disabled = !prevPageUrl;
 
-        // Loop through posts
         data.results.forEach(post => {
-        const postDiv = document.createElement("div");
-        postDiv.classList.add("post");
-        postDiv.innerHTML = `
+          const postDiv = document.createElement("div");
+          postDiv.classList.add("post");
+          postDiv.innerHTML = `
             <div class="title">${post.title}</div>
             <div class="content">${post.content}</div>
-            <button onclick="deletePost(${post.id})">🗑️ Delete</button>
-        `;
-        container.appendChild(postDiv);
+            <button class="delete-btn" onclick="deletePost(${post.id})">
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          `;
+          container.appendChild(postDiv);
         });
-    })
-    .catch(err => console.error("Error loading posts:", err));
+      })
+      .catch(err => console.error("Error loading posts:", err));
     }
 
+    function deletePost(id) {
+      if (!confirm("Are you sure you want to delete this post?")) return;
 
-    loadPosts();
-
-    
-function deletePost(id) {
-    if (!confirm("Are you sure you want to delete this post?")) return;
-
-    fetch(`${API_BASE}/api/posts/${id}/`, {
+      fetch(`${API_BASE}/api/posts/${id}/`, {
         method: "DELETE",
         headers: {
-        "Authorization": `Token ${token}`
+          "Authorization": `Token ${token}`
         }
-    })
-    .then(res => {
+      })
+      .then(res => {
         if (res.status === 204) {
-        alert("Deleted successfully ✅");
-        loadPosts(); // reload posts after deletion
+          alert("Post deleted successfully! 🗑️");
+          loadPosts();
         } else {
-        alert("Failed to delete ❌");
+          alert("Failed to delete post. Please try again.");
         }
-    })
-    .catch(err => console.error("Delete error:", err));
+      })
+      .catch(err => console.error("Delete error:", err));
     }
 
-
+    loadPosts();
   </script>
-
 </body>
 </html>
