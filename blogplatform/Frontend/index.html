@@ -26,8 +26,11 @@
     const API_BASE = "http://127.0.0.1:8000";
     const token = localStorage.getItem("token"); // ✅ Must be stored already
 
-    function loadPosts() {
-    fetch(`${API_BASE}/api/posts/`, {
+    let nextPageUrl = null;
+    let prevPageUrl = null;
+
+    function loadPosts(url = `${API_BASE}/api/posts/`) {
+    fetch(url, {
         method: "GET",
         headers: {
         "Authorization": `Token ${token}`
@@ -38,7 +41,16 @@
         const container = document.getElementById("postsContainer");
         container.innerHTML = "";
 
-        data.results.forEach(post => {  // ✅ Fix here
+        // Save next/previous page URLs
+        nextPageUrl = data.next;
+        prevPageUrl = data.previous;
+
+        // Disable/Enable buttons
+        document.getElementById("nextBtn").disabled = !nextPageUrl;
+        document.getElementById("prevBtn").disabled = !prevPageUrl;
+
+        // Loop through posts
+        data.results.forEach(post => {
         const postDiv = document.createElement("div");
         postDiv.classList.add("post");
         postDiv.innerHTML = `
@@ -46,12 +58,12 @@
             <div class="content">${post.content}</div>
             <button onclick="deletePost(${post.id})">🗑️ Delete</button>
         `;
-
         container.appendChild(postDiv);
         });
     })
     .catch(err => console.error("Error loading posts:", err));
     }
+
 
     loadPosts();
 
