@@ -5,7 +5,7 @@ from .serializers import PostSerializers
 # Create your views here.
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset=Post.objects.all()
+    queryset=Post.objects.all().order_by('-created_at')
     serializer_class=PostSerializers
-    permission_classes=[permissions.IsAuthenticatedOrReadOnly]
+    permission_classes=[permissions.IsAuthenticated]
 
