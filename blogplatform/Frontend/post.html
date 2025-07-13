@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Blog Post</title>
+  <style>
+    body { font-family: Arial; max-width: 600px; margin: 40px auto; }
+    input, textarea { width: 100%; margin: 10px 0; padding: 10px; }
+    button { padding: 10px 20px; }
+  </style>
+</head>
+<body>
+
+  <h2>Create Blog Post 📝</h2>
+
+  <input type="text" id="title" placeholder="Title">
+  <textarea id="content" rows="6" placeholder="Write your blog content..."></textarea>
+  <button onclick="submitPost()">Submit</button>
+
+  <script>
+    function submitPost() {
+      const title = document.getElementById('title').value;
+      const content = document.getElementById('content').value;
+      const token = localStorage.getItem("token"); // Assumes you're logged in & token is stored
+
+      fetch('http://127.0.0.1:8000/api/posts/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ' + token
+        },
+        body: JSON.stringify({ title, content })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        alert("Post created successfully ✅");
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        alert("Error creating post ❌");
+      });
+    }
+  </script>
+
+</body>
+</html>
